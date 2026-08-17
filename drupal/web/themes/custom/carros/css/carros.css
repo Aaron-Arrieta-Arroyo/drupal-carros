@@ -1,0 +1,80 @@
+/*Estilos del catálogo (listado de carros y listado de barcos)*/
+
+.views-view-grid {
+  gap: var(--sp3);
+}
+
+.views-view-grid__item {
+  min-width: 0;
+}
+
+.views-view-grid__item-inner {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--color--white);
+  border: 1px solid var(--color--gray-100);
+  border-radius: var(--sp2);
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgb(0 0 0 / 6%);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.views-view-grid__item-inner:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 28px rgb(0 0 0 / 14%);
+}
+
+/* Imagen del producto */
+.views-view-grid .views-field-field-imagenes {
+  padding: 0;
+}
+
+.views-view-grid .views-field-field-imagenes img {
+  display: block;
+  width: 100%;
+  height: 190px;
+  object-fit: cover;
+}
+
+.views-view-grid .views-field-field-imagenes .field-content:empty {
+  display: none;
+}
+
+/* Contenido de la tarjeta */
+.views-view-grid .views-field {
+  padding-inline: var(--sp2);
+}
+
+.views-view-grid .views-field-title {
+  margin-block-start: var(--sp2);
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.views-view-grid .views-field-title a {
+  color: #000;
+  text-decoration: none;
+}
+
+.views-view-grid .views-field-title a:hover {
+  color: #000;
+}
+
+.views-view-grid .views-field-field-marca,
+.views-view-grid .views-field-field-tipo-de-barco {
+  margin-block-start: var(--sp0-5);
+  color: #000;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.views-view-grid .views-field-field-price,
+.views-view-grid__item-inner > div:not([class]) {
+  padding-block: var(--sp) var(--sp2);
+  color: #000;
+  font-size: 1.5rem;
+  font-weight: 800;
+}

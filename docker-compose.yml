@@ -1,0 +1,53 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: drupal-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: drupal
+      MYSQL_USER: drupal
+      MYSQL_PASSWORD: drupal123
+    volumes:
+      - mysql-data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - drupal-network
+    restart: unless-stopped
+
+  drupal:
+    image: drupal:11-apache
+    container_name: drupal-app
+    depends_on:
+      - mysql
+    volumes:
+      - ./drupal:/opt/drupal
+      - ./drupal/web:/var/www/html
+
+    ports:
+      - "8080:80"
+    networks:
+      - drupal-network
+    restart: unless-stopped
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: drupal-phpmyadmin
+    depends_on:
+      - mysql
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: drupal
+      PMA_PASSWORD: drupal123
+    ports:
+      - "8081:80"
+    networks:
+      - drupal-network
+    restart: unless-stopped
+
+networks:
+  drupal-network:
+
+volumes:
+  mysql-data:
+  drupal-data:
