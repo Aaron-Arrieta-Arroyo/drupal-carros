@@ -903,14 +903,30 @@ $settings['migrate_node_migrate_type_classic'] = FALSE;
 # if (file_exists($app_root . '/' . $site_path . '/settings.local.php')) {
 #   include $app_root . '/' . $site_path . '/settings.local.php';
 # }
-if (getenv('DB_HOST')) {
+$db_url = $_ENV['DATABASE_URL'] ?? $_SERVER['DATABASE_URL'] ?? getenv('DATABASE_URL');
+$db_host = $_ENV['DB_HOST'] ?? $_SERVER['DB_HOST'] ?? getenv('DB_HOST');
+
+if ($db_url) {
+  $parts = parse_url($db_url);
   $databases['default']['default'] = [
-    'database' => getenv('DB_NAME'),
-    'username' => getenv('DB_USER'),
-    'password' => getenv('DB_PASSWORD'),
+    'database' => ltrim($parts['path'] ?? '', '/'),
+    'username' => $parts['user'] ?? '',
+    'password' => $parts['pass'] ?? '',
     'prefix' => '',
-    'host' => getenv('DB_HOST'),
-    'port' => getenv('DB_PORT'),
+    'host' => $parts['host'] ?? 'localhost',
+    'port' => $parts['port'] ?? '5432',
+    'driver' => 'pgsql',
+    'namespace' => 'Drupal\\pgsql\\Driver\\Database\\pgsql',
+    'autoload' => 'core/modules/pgsql/src/Driver/Database/pgsql/',
+  ];
+} elseif ($db_host) {
+  $databases['default']['default'] = [
+    'database' => $_ENV['DB_NAME'] ?? $_SERVER['DB_NAME'] ?? getenv('DB_NAME'),
+    'username' => $_ENV['DB_USER'] ?? $_SERVER['DB_USER'] ?? getenv('DB_USER'),
+    'password' => $_ENV['DB_PASSWORD'] ?? $_SERVER['DB_PASSWORD'] ?? getenv('DB_PASSWORD'),
+    'prefix' => '',
+    'host' => $db_host,
+    'port' => $_ENV['DB_PORT'] ?? $_SERVER['DB_PORT'] ?? getenv('DB_PORT'),
     'driver' => 'pgsql',
     'namespace' => 'Drupal\\pgsql\\Driver\\Database\\pgsql',
     'autoload' => 'core/modules/pgsql/src/Driver/Database/pgsql/',
