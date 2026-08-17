@@ -903,16 +903,30 @@ $settings['migrate_node_migrate_type_classic'] = FALSE;
 # if (file_exists($app_root . '/' . $site_path . '/settings.local.php')) {
 #   include $app_root . '/' . $site_path . '/settings.local.php';
 # }
-$databases['default']['default'] = array (
-  'database' => 'drupal',
-  'username' => 'drupal',
-  'password' => 'drupal123',
-  'prefix' => '',
-  'host' => 'mysql',
-  'port' => '3306',
-  'isolation_level' => 'READ COMMITTED',
-  'driver' => 'mysql',
-  'namespace' => 'Drupal\\mysql\\Driver\\Database\\mysql',
-  'autoload' => 'core/modules/mysql/src/Driver/Database/mysql/',
-);
+if (getenv('DB_HOST')) {
+  $databases['default']['default'] = [
+    'database' => getenv('DB_NAME'),
+    'username' => getenv('DB_USER'),
+    'password' => getenv('DB_PASSWORD'),
+    'prefix' => '',
+    'host' => getenv('DB_HOST'),
+    'port' => getenv('DB_PORT'),
+    'driver' => 'pgsql',
+    'namespace' => 'Drupal\\pgsql\\Driver\\Database\\pgsql',
+    'autoload' => 'core/modules/pgsql/src/Driver/Database/pgsql/',
+  ];
+} else {
+  $databases['default']['default'] = [
+    'database' => 'drupal',
+    'username' => 'drupal',
+    'password' => 'drupal123',
+    'prefix' => '',
+    'host' => 'mysql',
+    'port' => '3306',
+    'isolation_level' => 'READ COMMITTED',
+    'driver' => 'mysql',
+    'namespace' => 'Drupal\\mysql\\Driver\\Database\\mysql',
+    'autoload' => 'core/modules/mysql/src/Driver/Database/mysql/',
+  ];
+}
 $settings['config_sync_directory'] = 'sites/default/files/config_jabsdBFrq0U-9jOPnSRHG80UXlkkxBUL8yLpJzqkhGfp0M-XSf8MP4Fv4MBFsR3uqXeanNKzqA/sync';
