@@ -3,16 +3,11 @@ FROM drupal:11-apache
 RUN apt-get update && apt-get install -y \
     libpq-dev \
     unzip \
-    git \
     && docker-php-ext-install pdo pdo_pgsql \
     && rm -rf /var/lib/apt/lists/*
 
-COPY drupal/composer.json drupal/composer.lock /opt/drupal/
-WORKDIR /opt/drupal
-RUN composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist || true
-
-COPY drupal/web /var/www/html
 COPY drupal/vendor /opt/drupal/vendor
+COPY drupal/web /var/www/html
 
 RUN chown -R www-data:www-data /var/www/html \
     && mkdir -p /var/www/html/sites/default/files \
